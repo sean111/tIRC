@@ -1,2 +1,2 @@
 #!/bin/bash
-open -a /Users/sean/Downloads/node-webkit-v0.5.1-osx-ia32/node-webkit.app /Users/sean/Projects/tIRC/src
+open -a /Applications/node-webkit.app ./src
