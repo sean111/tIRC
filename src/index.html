@@ -1,0 +1,89 @@
+<DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/main.js"></script>
+        <style>
+            .chatuser {
+                font-weight: bold;
+            }
+            .chatmessage {
+                border-bottom: thin solid #000;
+            }
+            body {
+                padding-bottom: 40px !important;
+                padding-top: 50px !important;
+            }
+            #chatinput {
+                padding: 15px;
+                width: 100%;
+            }
+            .navbar-fixed-bottom {
+              position: fixed !important;
+            }
+            .navbar-fixed-top {
+                position: fixed !important;
+            }
+            .fill {
+                height: 88%;
+                overflow: auto;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <ul class="nav">
+                    <li><a href='#' id='doIt'>Connect</a></li>
+                    <li><a href="#" id="newChannel">Join Channel</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12 tabbable tabs-below">
+                    <div class="tab-content" id="tabContent">
+                        <div class="tab-pane active fill" id="system">
+                            Welcome to tIRC v 0.0.1<br />
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs" id="tabBar">
+                        <li class="active"><a href="#system" data-toggle="tab">System</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="navbar">
+            <div class="navbar-inner navbar-fixed-bottom">
+                <input type='text' id='chatinput'>
+            </div>
+        </div>
+        <!--Modal Boxes-->
+        <div class="modal hide fade" id="userinfo">
+            <div class="modal-header">
+                <h3>Twitch Login Info</h3>
+            </div>
+            <div class="modal-body">
+                Username: <input type='text' id='username' /><br />
+                Password: <input type='password' id='password'>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" id="userinfo-save">Save</button>
+            </div>
+        </div>
+        <div class="modal hide fade" id="chanInput">
+            <div class="modal-header">
+                <h3>Join Channel</h3>
+            </div>
+            <div class="modal-body">
+                Caster Name: <input type='text' id='channel' />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="newChanButton" data-dismiss="modal">Join</button>
+            </div>
+        </div>
+    </body>
+</html>
