@@ -29,7 +29,7 @@ $(function() {
     $('#newChanButton').click(function() {
         var chan = $('#channel').val();
         if(chan.length > 0) {
-            $('#tabBar').append('<li><a href="#'+chan+'" data-toggle="tab">'+chan+'</a></li>');
+            $('#tabBar').append('<li><a href="#'+chan+'" data-toggle="tab"><button class="close closeTab" onClick="closeTab(\"'+chan+'\")" data-tab="'+chan+'">x</button>'+chan+'</a></li>');
             $('#tabContent').append('<div class="tab-pane fill" id="'+chan+'"></div>');
             $('#tabBar a:last').tab('show');
             connection.join("#"+chan);
@@ -69,7 +69,7 @@ $(function() {
         scrollPage();
     });
 
-    $('a[data-toggle="tab"]').on('click', function (e) {
+    $('a[data-toggle="tab"]').live('click', function (e) {
         scrollPage();
         activeTab = getActiveTab();
         console.log({activeTab: activeTab, event: e});
@@ -84,7 +84,7 @@ $(function() {
 
 function scrollPage() {
     //$(".tab-content .active").animate({ scrollTop: $(document).height() }, 1000);
-    $(".tab-content .active").animate({ scrollTop: 9999 }, 1000);
+    $(".tab-content .active").animate({ scrollTop: 999999 }, 1000);
 }
 
 function getActiveTab() {
@@ -98,11 +98,11 @@ function connect() {
     }
     else {
         //Add connect code here
-        alert("Starting connection as "+username);
+        //console.log("Starting connection as "+username);
         connection = new irc.Client('irc.twitch.tv', username, {
             password: password
         });
-        alert("Addind listeners");
+        //console.log("Addind listeners");
         connection.addListener('error', function(message) {
             //$('#system').append("ERROR: "+message+"<br />");
             systemLog(message);
@@ -149,7 +149,12 @@ function parseEmotes(message) {
     //console.log(message);
     for(var x = 0; x < emotes.length; x++) {
         //console.log({regex: emotes[x].regex, image: emotes[x].images[0].url});
-        message = message.replace(unescape(emotes[x].regex), '<img src="'+emotes[x].images[0].url+'" />');
+        //message = message.replace(unescape(emotes[x].regex), '<img src="'+emotes[x].images[0].url+'" />');
+        message = message.replace(new RegExp(unescape(emotes[x].regex), 'g'), '<img src="'+emotes[x].images[0].url+'" />');
     }
     return message;
+}
+
+function closeTab(tab) {
+    console.log('Close event id: '+tab);
 }
