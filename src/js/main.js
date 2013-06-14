@@ -29,7 +29,7 @@ $(function() {
     $('#newChanButton').click(function() {
         var chan = $('#channel').val();
         if(chan.length > 0) {
-            $('#tabBar').append('<li><a href="#'+chan+'" data-toggle="tab"><button class="close closeTab" onClick="closeTab(\"'+chan+'\")" data-tab="'+chan+'">x</button>'+chan+'</a></li>');
+            $('#tabBar').append('<li data-tab="'+chan+'"><a href="#'+chan+'" data-toggle="tab"><button class="close closeTab" onClick="closeTab(\''+chan+'\')" data-tab="'+chan+'">x</button>'+chan+'</a></li>');
             $('#tabContent').append('<div class="tab-pane fill" id="'+chan+'"></div>');
             $('#tabBar a:last').tab('show');
             connection.join("#"+chan);
@@ -69,7 +69,7 @@ $(function() {
         scrollPage();
     });
 
-    $('a[data-toggle="tab"]').live('click', function (e) {
+    $('a[data-toggle="tab"]').on('click', function (e) {
         scrollPage();
         activeTab = getActiveTab();
         console.log({activeTab: activeTab, event: e});
@@ -131,10 +131,12 @@ function connect() {
 }
 
 function disconnect() {
-    alert('Disconnected!');
+    //alert('Disconnected!');
     connection.disconnect();
     connected = false;
+    systemLog("Disconnected from Twitch Chat");
     $('#doIt').html('Connect');
+    connection = null;
 }
 
 function systemLog(message) {
@@ -157,4 +159,8 @@ function parseEmotes(message) {
 
 function closeTab(tab) {
     console.log('Close event id: '+tab);
+    connection.part('#'+tab);
+    $('#tabBar a:first').tab('show');
+    $('li[data-tab="'+tab+'"]').remove();
+    $('#'+tab).remove();
 }
