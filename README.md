@@ -3,8 +3,11 @@ A node-webit client to connect to the TwitchIRC servers while also replicating s
 
 #TODO
 Add mod & sub icons - Not sure how I can tell if someone is a sub yet
+
 Add in mod / caster features
+
 Add in userlist & count
+
 Add in emote list - Need to figure out how to authenticate the current user to twitch to get their sub emotes
 
 

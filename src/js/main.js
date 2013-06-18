@@ -27,13 +27,15 @@ $(function() {
         }
     });
     $('#newChanButton').click(function() {
-        var chan = $('#channel').val();
+        var chan = $('#channel').val().toLowerCase();
         if(chan.length > 0) {
             $('#tabBar').append('<li data-tab="'+chan+'"><a href="#'+chan+'" data-toggle="tab"><button class="close closeTab" onClick="closeTab(\''+chan+'\')" data-tab="'+chan+'">x</button>'+chan+'</a></li>');
             $('#tabContent').append('<div class="tab-pane fill" id="'+chan+'"></div>');
             $('#tabBar a:last').tab('show');
             connection.join("#"+chan);
+            activeTab = chan;
         }
+        $('#channel').val(null);
     });
     //$('#chatinput').keypress(function(e) {
     $('#chatinput').keydown(function(e) {
@@ -78,9 +80,6 @@ $(function() {
             console.log('enter pressed')
         }*/
     });
-    $('#tabBar a').click(function() {
-        scrollPage();
-    });
 
     /*$('a[data-toggle="tab"]').on('click', function (e) {
         scrollPage();
@@ -88,9 +87,10 @@ $(function() {
         console.log({activeTab: activeTab, event: e});
     });*/
     $('#tabBar').on('click', 'a', function(e) {
-        scrollPage();
         //console.log($(this).parent().attr('data-tab'));
         activeTab = $(this).parent().attr('data-tab');
+        $('li[data-tab="'+activeTab+'"]').children().removeClass('dirty');
+        scrollPage();
         console.log({activeTab: activeTab, event: e});
     });
 
@@ -102,7 +102,7 @@ $(function() {
 });
 
 function scrollPage() {
-    //$(".tab-content .active").animate({ scrollTop: $(document).height() }, 1000);
+    //Need to fix this so that it uses activeTab
     $(".tab-content .active").animate({ scrollTop: 999999 }, 1000);
 }
 
@@ -143,6 +143,9 @@ function connect() {
             $('#'+to).append("<div class='chatmessage'><span class='chatuser'>"+from+"</span>: "+message+"</div>");
             if(to == getActiveTab()) {
                 scrollPage();
+            }
+            else {
+                $('li[data-tab="'+to+'"]').children().addClass('dirty');
             }
         });
         connected = true;
