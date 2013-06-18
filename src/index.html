@@ -16,10 +16,10 @@
                 padding-bottom: 40px !important;
                 padding-top: 50px !important;
             }
-            #chatinput {
+            /*#chatinput {
                 padding: 15px;
                 width: 100%;
-            }
+            }*/
             .navbar-fixed-bottom {
               position: fixed !important;
             }
@@ -55,14 +55,16 @@
                         </div>
                     </div>
                     <ul class="nav nav-tabs" id="tabBar">
-                        <li class="active"><a href="#system" data-toggle="tab">System</a></li>
+                        <li class="active" data-tab='system'><a href="#system" data-toggle="tab">System</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="navbar">
             <div class="navbar-inner navbar-fixed-bottom">
-                <input type='text' id='chatinput'>
+                <form class="navbar-form">
+                    <input type='text' id='chatinput' class="input-block-level">
+                </form>
             </div>
         </div>
         <!--Modal Boxes-->
@@ -71,8 +73,20 @@
                 <h3>Twitch Login Info</h3>
             </div>
             <div class="modal-body">
-                Username: <input type='text' id='username' /><br />
-                Password: <input type='password' id='password'>
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        <label for="username" class="control-label">Username:</label>
+                        <div class="controls">
+                            <input type='text' id='username' name="username" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="password" class="control-label">Password:</label>
+                        <div class="controls">
+                            <input type='password' id='password' name="password" />
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" data-dismiss="modal" id="userinfo-save">Save</button>

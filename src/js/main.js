@@ -35,43 +35,62 @@ $(function() {
             connection.join("#"+chan);
         }
     });
-    $('#chatinput').keypress(function(e) {
-        console.log(e.which);
-        if(e.which == 13) {
-            console.log('enter pressed')
-            if(connected) {
-                var chan = $('#tabContent .active').attr('id');
-                var message = $('#chatinput').val();
-                console.log({event: 'say', channel: chan, message: message});
-                if(chan == "system") {
-                    if(message.indexOf("/") == 0) {
-                        //Check for command stuff here
-                        if(message == "/debug") {
-                            console.log(connection.opt.channels);
-                            console.log(connection.chans);
+    //$('#chatinput').keypress(function(e) {
+    $('#chatinput').keydown(function(e) {
+        //console.log(e.which);
+        switch(e.which) {
+            case 13: {
+                e.preventDefault();
+                console.log('Enter pressed!');
+                if(connected) {
+                    var chan = $('#tabContent .active').attr('id');
+                    var message = $('#chatinput').val();
+                    console.log({event: 'say', channel: chan, message: message});
+                    if(chan == "system") {
+                        if(message.indexOf("/") == 0) {
+                            //Check for command stuff here
+                            if(message == "/debug") {
+                                console.log(connection.opt.channels);
+                                console.log(connection.chans);
+                            }
+                        }
+                        else {
+                            $('#system').append("<div class='error'>Sorry you can't do that</div>");
                         }
                     }
                     else {
-                        $('#system').append("<div class='error'>Sorry you can't do that</div>");
+                        connection.say("#"+chan, message);
+                        message = parseEmotes(message);
+                        $('#'+chan).append("<div class='chatmessage'><span class='chatuser'>"+username+"</span>: "+message+"</div>")
+                        $('#chatinput').val('');
+                        scrollPage();
                     }
                 }
-                else {
-                    connection.say("#"+chan, message);
-                    message = parseEmotes(message);
-                    $('#'+chan).append("<div class='chatmessage'><span class='chatuser'>"+username+"</span>: "+message+"</div>")
-                    $('#chatinput').val('');
-                    scrollPage();
-                }
+                break;
+            }
+            case 9: {
+                e.preventDefault();
+                console.log('Do autocomplete shit here');
+                break;
             }
         }
+        /*if(e.which == 13) {
+            console.log('enter pressed')
+        }*/
     });
     $('#tabBar a').click(function() {
         scrollPage();
     });
 
-    $('a[data-toggle="tab"]').on('click', function (e) {
+    /*$('a[data-toggle="tab"]').on('click', function (e) {
         scrollPage();
         activeTab = getActiveTab();
+        console.log({activeTab: activeTab, event: e});
+    });*/
+    $('#tabBar').on('click', 'a', function(e) {
+        scrollPage();
+        //console.log($(this).parent().attr('data-tab'));
+        activeTab = $(this).parent().attr('data-tab');
         console.log({activeTab: activeTab, event: e});
     });
 
@@ -88,7 +107,8 @@ function scrollPage() {
 }
 
 function getActiveTab() {
-    return $('#tabContent .active').attr('id');
+    //return $('#tabContent .active').attr('id');
+    return activeTab;
 }
 function connect() {
     if(username == null || password == null) {
@@ -149,6 +169,17 @@ function addContent(tab, content) {
 
 function parseEmotes(message) {
     //console.log(message);
+
+    //URLs starting with http://, https://, or ftp://
+    replacePattern1 = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    message = message.replace(replacePattern1, '<a href="$1" target="new">$1</a>');
+
+    //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    message = message.replace(replacePattern2, '$1<a href="http://$2" target="new">$2</a>');
+
+    //TODO: Add code to parse .com, .org, .net, and .tv urls without protocol or www
+
     for(var x = 0; x < emotes.length; x++) {
         //console.log({regex: emotes[x].regex, image: emotes[x].images[0].url});
         //message = message.replace(unescape(emotes[x].regex), '<img src="'+emotes[x].images[0].url+'" />');
