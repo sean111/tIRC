@@ -52,6 +52,8 @@ $(function() {
                         if(message.indexOf("/") == 0) {
                             //Check for command stuff here
                             if(message == "/debug") {
+                                var gui = require('nw.gui');
+                                gui.Window.get().showDevTools();
                                 console.log(connection.opt.channels);
                                 console.log(connection.chans);
                             }
@@ -59,6 +61,7 @@ $(function() {
                         else {
                             $('#system').append("<div class='error'>Sorry you can't do that</div>");
                         }
+                        $('#chatinput').val('');
                     }
                     else {
                         connection.say("#"+chan, message);
@@ -76,16 +79,8 @@ $(function() {
                 break;
             }
         }
-        /*if(e.which == 13) {
-            console.log('enter pressed')
-        }*/
     });
 
-    /*$('a[data-toggle="tab"]').on('click', function (e) {
-        scrollPage();
-        activeTab = getActiveTab();
-        console.log({activeTab: activeTab, event: e});
-    });*/
     $('#tabBar').on('click', 'a', function(e) {
         //console.log($(this).parent().attr('data-tab'));
         activeTab = $(this).parent().attr('data-tab');
@@ -184,8 +179,6 @@ function parseEmotes(message) {
     //TODO: Add code to parse .com, .org, .net, and .tv urls without protocol or www
 
     for(var x = 0; x < emotes.length; x++) {
-        //console.log({regex: emotes[x].regex, image: emotes[x].images[0].url});
-        //message = message.replace(unescape(emotes[x].regex), '<img src="'+emotes[x].images[0].url+'" />');
         message = message.replace(new RegExp(unescape(emotes[x].regex), 'g'), '<img src="'+emotes[x].images[0].url+'" />');
     }
     return message;
