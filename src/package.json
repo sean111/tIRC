@@ -1,0 +1,9 @@
+{
+    "name": "tIRC",
+    "main": "index.html",
+    "window": {
+        "toolbar": false,
+        "frame": true
+    }
+    //"chromium-args":"--enable-viewport  --disable-device-orientation  --disable-web-security"
+}
